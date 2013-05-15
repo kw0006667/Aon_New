@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class p14_cutout : MonoBehaviour
+public class p11_cutout : MonoBehaviour
 {
     public float Speed;
     public LayerMask Mask;
@@ -40,15 +40,24 @@ public class p14_cutout : MonoBehaviour
             {
                 print(this.renderer.material.GetFloat("_Cutoff"));
                 this.renderer.material.SetFloat("_Cutoff", this.pressValue);
-                if (this.pressValue < 1.0f)
+                if (this.pressValue < 0.9f)
                 {
-                    this.pressValue += Time.deltaTime * 0.1f;
+                    this.pressValue += Time.deltaTime * 0.3f;
+                }
+
+                if (this.pressValue >= 0.9f)
+                {
+                    this.isLock = true;
                 }
 
             }
             else if (Physics.Raycast(this.ray, out this.hit, 100, this.Mask) && Input.touches[0].phase == TouchPhase.Ended)
             {
                 this.isPress = false;
+                if (this.isLock)
+                {
+                    this.GetComponent<AonTrigger>().enabled = true;
+                }
             }
 
 
@@ -69,7 +78,7 @@ public class p14_cutout : MonoBehaviour
             {
                 this.renderer.material.SetFloat("_Cutoff", this.pressValue);
 
-                this.pressValue -= Time.deltaTime * 0.1f;
+                this.pressValue -= Time.deltaTime * 0.3f;
             }
 
         }
