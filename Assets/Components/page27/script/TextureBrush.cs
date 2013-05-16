@@ -64,18 +64,28 @@ public class TextureBrush : MonoBehaviour
                 pixelUV.y *= tex.height;
 
                 int i = 0;
-                for (int px = Convert.ToInt16(pixelUV.x) - 32; px < Convert.ToInt16(pixelUV.x) + 32; px++)
+                for (int px = Convert.ToInt16(pixelUV.x) - 64; px < Convert.ToInt16(pixelUV.x) + 64; px++)
                 {
                     int j = 0;
-                    for (int py = Convert.ToInt16(pixelUV.y) - 32; py < Convert.ToInt16(pixelUV.y) + 32; py++)
+                    for (int py = Convert.ToInt16(pixelUV.y) - 64; py < Convert.ToInt16(pixelUV.y) + 64; py++)
                     {
                         Color col = tex.GetPixel(px, py);
                         Color colBrush = this.BrushStencil.GetPixel(i, j);
                         //Debug.Log("r = " + colBrush.r + ", g = " + colBrush.g + ", b = " + colBrush.b + ", a = " + colBrush.a);
-                        if (colBrush.a < 0.3f)
-                        {
-                            tex.SetPixel(px, py, Color.Lerp(new Color(col.r, col.g, col.b, col.a), new Color(colBrush.r, colBrush.g, colBrush.b, colBrush.a), 0.5f));
-                        }
+                       /* if (colBrush.a < 0.3f)
+                        {*/
+                            float r, g, b, a;
+                            //r = colBrush.r * colBrush.a + col.r * (1 - colBrush.a);
+                            //g = colBrush.g * colBrush.a + col.g * (1 - colBrush.a);
+                            //b = colBrush.b * colBrush.a + col.b * (1 - colBrush.a);
+                            r = col.r;
+                            g = col.g;
+                            b = col.b;
+                            a = (1-colBrush.a) * col.a;
+
+                            tex.SetPixel(px, py, new Color(r,g,b,a));                           
+//                          tex.SetPixel(px, py, Color.Lerp(new Color(col.r, col.g, col.b, col.a), new Color(colBrush.r, colBrush.g, colBrush.b, colBrush.a), 0.5f));
+                            //}
                         j++;
                     }
                     i++;
